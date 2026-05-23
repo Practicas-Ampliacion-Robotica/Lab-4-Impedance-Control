@@ -175,7 +175,7 @@
             Eigen::VectorXd q_dot(2);
             q_dot << q_dot1, q_dot2;
 
-            torque = M * desired_joint_accelerations_ + C + Fb * q_dot + g_vec - tau_ext;
+            torque = M * desired_joint_accelerations_ + C + Fb * q_dot + g_vec; // - tau_ext;
 
             return torque;
         }
