@@ -33,7 +33,8 @@
               joint_positions_(Eigen::VectorXd::Zero(2)),
               joint_velocities_(Eigen::VectorXd::Zero(2)),
               desired_joint_accelerations_(Eigen::VectorXd::Zero(2)),
-              joint_torques_(Eigen::VectorXd::Zero(2))
+              joint_torques_(Eigen::VectorXd::Zero(2)),
+              external_wrenches_(Eigen::VectorXd::Zero(2))
         {
             // Frequency initialization
             this->declare_parameter<double>("frequency", 1000.0);
@@ -70,6 +71,10 @@
             // Create subscription to joint_accelerations
             subscription_desired_joint_accelerations_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
                 "desired_joint_accelerations", 1, std::bind(&DynamicsCancellationNode::desired_joint_accelerations_callback, this, std::placeholders::_1));
+            
+            // Create subscription to external wrenches
+            external_wrenches_subscription_ = this->create_subscription<geometry_msgs::msg::Wrench>(
+                "external_wrenches", 1, std::bind(&DynamicsCancellationNode::external_wrenches_callback, this, std::placeholders::_1));
 
             // Create publishers for joint torque
             publisher_joint_torques_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("joint_torques", 1);
@@ -106,6 +111,13 @@
                 joint_velocities_(0) = msg->velocity[joint1_index];
                 joint_velocities_(1) = msg->velocity[joint2_index];
             }
+        }
+
+        // external_wrenches subscription callback
+        void external_wrenches_callback(const geometry_msgs::msg::Wrench::SharedPtr msg)
+        {
+            external_wrenches_(0) = msg->force.x;
+            external_wrenches_(1) = msg->force.y;
         }
 
         // joint_states subscription callback - when a msg arrives, updates desired_joint_accelerations_
@@ -149,12 +161,21 @@
             g_vec << (m1_ + m2_) * l1_ * g_ * cos(q1) + m2_ * g_ * l2_ * cos(q1 + q2),
                 m2_ * g_ * l2_ * cos(q1 + q2);
 
+
+            // Calculate J
+            J << -l1_ * sin(q1) - l2_ * sin(q1 + q2), -l2_ * sin(q1 + q2),
+                l1_ * cos(q1) + l2_ * cos(q1 + q2), l2_ * cos(q1 + q2);
+
+            // Calculate tau_ext
+            tau_ext << J.transpose() * external_wrenches_;
+
             // Calculate control torque using the dynamic model: torque = M * q_ddot + C * q_dot + Fb * q_dot + g
+            // practica 4 se añade "- J^T * f_ext", para obedecir al modelo dinámico completo 
             Eigen::VectorXd torque(2);
             Eigen::VectorXd q_dot(2);
             q_dot << q_dot1, q_dot2;
 
-            torque << M * desired_joint_accelerations_ + C + Fb * q_dot + g_vec;
+            torque = M * desired_joint_accelerations_ + C + Fb * q_dot + g_vec - tau_ext;
 
             return torque;
         }
@@ -173,6 +194,7 @@
         rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_joint_states_;
         rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr subscription_desired_joint_accelerations_;
         rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_joint_torques_;
+        rclcpp::Subscription<geometry_msgs::msg::Wrench>::SharedPtr external_wrenches_subscription_;
         rclcpp::TimerBase::SharedPtr timer_;
 
         // Joint variables
@@ -180,6 +202,9 @@
         Eigen::VectorXd joint_velocities_;
         Eigen::VectorXd desired_joint_accelerations_;
         Eigen::VectorXd joint_torques_;
+
+        // Fuerzas enternas
+        Eigen::VectorXd external_wrenches_;
 
         // dynamic parameters variables
         double m1_;
