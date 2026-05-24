@@ -13,7 +13,7 @@ Finalmente, se cambiará la posición deseada del robot para ver como se comport
 
 Para diseñar el controlador de impedancias se aplicará el siguiente diagrama de bloques con el cual se produce el control de impedancias. 
 
-<img src="images/diagram_bloques.png" width="50%">
+<img src="images/digrama_bloques.png" width="50%">
 
 El esquema está formado por:
 
@@ -35,6 +35,8 @@ $$\dot{\mathbf{x}} = \mathbf{J}(\mathbf{q})\dot{\mathbf{q}}$$
 aceleración deseada a partir de los datos recibidos de los sensores. A partir del modelo de impedancia de segundo orden:
 
 $$\mathbf{M}\ddot{\tilde{\mathbf{x}}} + \mathbf{B}\dot{\tilde{\mathbf{x}}} + \mathbf{K}\tilde{\mathbf{x}} = \mathbf{f}_{ext}$$
+
+donde M es la inercia simulada del efecto final, B es la "fricción" que tendrá el efector final al moverse y K cuánta fuerza intentará el robot volver a su posición objetivo si se empuja. 
 
 Se obtienen las aceleraciones deseadas:
 
@@ -214,6 +216,10 @@ Se obtienen los siguientes resultados:
 - Muestra gráfica
 <img src="images/yaml_base.png" width="50%">
 
+Se puede observar como el manipulardor, según aumenta la fuerza aplicada, se va a adaptando a dicha fuerza. Si no existeriera esa compensación
+por impedancias, el robot buscaría volvel a la misma posición donde estaba, a pesar de aplicarle la fuerza externa. 
+
+En la gráfica también se puede observar cómo una fuerza aplicada en el eje y también afecta en la posición en x, y vicerversa. Eso es debido a que la matriz de inercia $$M_x$$ no es diagonal, eso quiere decir que al aplicar una fuerza, esa fuerza se transmite por los eslabones haciendo girar el resto de articulaciones. Este problema se solucionará posteriormente.
 
 ### Prueba con M = 10
 
@@ -231,6 +237,8 @@ Se obtienen los siguientes resultados:
 - Muestra gráfica
 <img src="images/yaml_m10.png" width="50%">
 
+Al aumentar el valor de M, es cómo si se aumentará el peso del EE. Al aumentar el valor de la masa, es más complicado movel el efector final aplicándole una fuerza ya que la acelecarión deseada disminuye. Por lo tanto, hay que aplicarle mayor fuerza para moverlo la misma distancia. 
+Además, al tener más masa tiene mayor inercia, haciendo que sea más dificil de controlar, por esa razón hay mayor movimiento en eje opuesto al cual se aplica la fuerza. 
 
 ### Prueba con B = 10
 
@@ -249,6 +257,8 @@ Se obtienen los siguientes resultados:
 - Muestra gráfica
 <img src="images/yaml_b10.png" width="50%">
 
+Al diminuir la constante de amoriguamiento, el EE tiene mayor sensibilidad ante los cambios haciendo que una fuerza externas haga un cambio más brusco en el manipulador.
+Es como si empeoráramos los "frenos" del EE.
 
 
 ### Prueba con K = 25
@@ -268,7 +278,8 @@ Se obtienen los siguientes resultados:
 - Muestra gráfica
 <img src="images/yaml_k25.png" width="50%">
 
-
+Al disimuir la contante k, es como si estuvieramos tirando de un muelle capaz de estirarse más. Por lo que, al poder estirarse en mayor medida, los cambios que se producen
+en el EE, son más lentos ya que el "muelle" tira menos del efector final al aplicarle la fuerza.
 
 ### Prueba con impedancia en 'X' y 'Y' diferentes
 
@@ -287,7 +298,11 @@ Se obtienen los siguientes resultados:
 - Muestra gráfica
 <img src="images/yaml_x_h_y_l.png" width="50%">
 
+Por último, al cambiar los parámetros de forma asimétrica, cada eje tendrá por lo tanto un comportamiento asímetrico de la misma forma.
 
+
+
+### Solución sobre el acoplamiento cruzado 
 
 
 
