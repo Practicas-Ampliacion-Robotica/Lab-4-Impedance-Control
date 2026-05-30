@@ -368,9 +368,29 @@ Se han usado los mismo parámetros con en el experimento base y se han obtenido 
 Se puede observar, sobre todo en los gráficos, que al aplicar una fuerza en un eje, sólo se modifica la posición en el mismo eje y no en el resto de los ejes, solucionando de esta forma el problema. 
 
 
+### Apartado 4.4
+
+En este apartado se probará a mover la posición del EE del manipulador, para observar su compartamiento. Se han usado los parámetros por defecto y no se ha tenido en cuenta la compensación para solucinar el acoplamiento cruzado. Se obtiene como resultado:
 
 
+- Muestra en vídeo
+<img src="images/gift_4.4.gif" width="50%">
 
+
+- Muestra gráfica
+<img src="images/yaml_4.4.png" width="50%">
+
+Se puede observar que al mover la posición de referencia, el efecto final trata de seguir esa referencia. Al mismo tiempo, al aplicar una fuerza externa dicho EE cede ante al fuerza y se desvía de la posición ideal. 
+
+También se puede observar que al no tener la compensación de las fuerzas externas, se da el acoplamiento cruzado y al ejecercer fuerza en un eje, también se modifica el otro al mismo tiempo. 
+
+Por último, se ha estado moviendo el manipular a diferentes posiciones y se ha observado que cuando se mueve dicho EE a una posición donde no puede llegar físicamente, en el programa /impedance_controller salta el siguiente error:
+
+<img src="images/error_4.4.png" width="100%">
+
+Lo que muestra es que el se está transmistiendo una eceleración infinita ya que el controlador está diciendo el manipulador que aplique toda la fuerza que pueda pero al ser físicamente imposible llegar a esa posición por mucha fuerza que aplique nunca conseguirá llegar por lo que el programa se paraliza como botón de seguridad. En el siguiente video se muestra el problema gráficamente:
+
+<img src="images/gift_4.4_error.gif" width="50%">
 
 
 
