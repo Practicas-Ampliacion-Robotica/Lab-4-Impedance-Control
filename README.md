@@ -315,7 +315,7 @@ presentado anteriormente.
 
 Para solucionar el acoplamiento cruzado se ha seguido el siguiente diagrama de bloques:
 
-<img src="images/diagrrma_bloques_adicional.png" width="50%">
+<img src="images/diagrrma_bloques_adicional.png" width="75%">
 
 En este caso, se ha añadido al diagrama una cancelación de las fuerzas externas a la hora de calcular el par de cada articulación, quedando en la fórmula de pares:
 
