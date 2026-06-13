@@ -13,7 +13,7 @@ Finalmente, se cambiará la posición deseada del robot para ver como se comport
 
 Para diseñar el controlador de impedancias se aplicará el siguiente diagrama de bloques con el cual se produce el control de impedancias. 
 
-<img src="images/digrama_bloques.png" width="50%">
+<img src="images/digrama_bloques.png" width="80%">
 
 El esquema está formado por:
 
@@ -210,11 +210,11 @@ Para esta prueba se han usado los siguientes parámetros:
 Se obtienen los siguientes resultados:
 
 - Muestra en vídeo
-<img src="images/gif_4.3_base.gif" width="50%">
+<img src="images/gif_4.3_base.gif" width="80%">
 
 
 - Muestra gráfica
-<img src="images/yaml_base.png" width="50%">
+<img src="images/yaml_base.png" width="80%">
 
 Se puede observar como el manipulador, según aumenta la fuerza aplicada, se va a adaptando a dicha fuerza. Si no existiera esa compensación
 por impedancias, el robot buscaría volver a la misma posición donde estaba, a pesar de aplicarle la fuerza externa. 
@@ -231,11 +231,11 @@ Para esta prueba se han usado los siguientes parámetros:
 Se obtienen los siguientes resultados:
 
 - Muestra en vídeo
-<img src="images/gif_4.3_M10.gif" width="50%">
+<img src="images/gif_4.3_M10.gif" width="80%">
 
 
 - Muestra gráfica
-<img src="images/yaml_m10.png" width="50%">
+<img src="images/yaml_m10.png" width="80%">
 
 Al aumentar el valor de M, es cómo si se aumentará el peso del EE. Al aumentar el valor de la masa, es más complicado movel el efector final aplicándole una fuerza ya que la aceleración deseada disminuye. Por lo tanto, hay que aplicarle mayor fuerza para moverlo la misma distancia. 
 Además, al tener más masa tiene mayor inercia, haciendo que sea más dificil de controlar, por esa razón hay mayor movimiento en eje opuesto al cual se aplica la fuerza. 
@@ -251,11 +251,11 @@ Para esta prueba se han usado los siguientes parámetros:
 Se obtienen los siguientes resultados:
 
 - Muestra en vídeo
-<img src="images/gif_4.3_b10.gif" width="50%">
+<img src="images/gif_4.3_b10.gif" width="80%">
 
 
 - Muestra gráfica
-<img src="images/yaml_b10.png" width="50%">
+<img src="images/yaml_b10.png" width="80%">
 
 Al disminuir la constante de amortiguamiento, el EE tiene mayor sensibilidad ante los cambios, haciendo que una fuerza externa haga un cambio más brusco en el manipulador.
 Es como si empeoráramos los "frenos" del EE.
@@ -272,11 +272,11 @@ Para esta prueba se han usado los siguientes parámetros:
 Se obtienen los siguientes resultados:
 
 - Muestra en vídeo
-<img src="images/gif_4.3_k25.gif" width="50%">
+<img src="images/gif_4.3_k25.gif" width="80%">
 
 
 - Muestra gráfica
-<img src="images/yaml_k25.png" width="50%">
+<img src="images/yaml_k25.png" width="80%">
 
 Al disminuir la contante k, es como si estuvieramos tirando de un muelle capaz de estirarse más. Por lo que, al poder estirarse en mayor medida, los cambios que se producen
 en el EE, son más lentos ya que el "muelle" tira menos del efector final al aplicarle la fuerza.
@@ -292,11 +292,11 @@ Para esta prueba se han usado los siguientes parámetros:
 Se obtienen los siguientes resultados:
 
 - Muestra en vídeo
-<img src="images/gif_4.3_x_h_y_l.gif" width="50%">
+<img src="images/gif_4.3_x_h_y_l.gif" width="80%">
 
 
 - Muestra gráfica
-<img src="images/yaml_x_h_y_l.png" width="50%">
+<img src="images/yaml_x_h_y_l.png" width="80%">
 
 Por último, al cambiar los parámetros de forma asimétrica, cada eje tendrá por lo tanto un comportamiento asímetrico de la misma forma.
 
@@ -359,11 +359,11 @@ Donde se puede ver que el topic de las fuerzas externas (/external_wrenches) ent
 Se han usado los mismo parámetros con en el experimento base y se han obtenido los siguientes resultados:
 
 - Muestra en vídeo
-<img src="images/gif_4.3_opt.gif" width="50%">
+<img src="images/gif_4.3_opt.gif" width="80%">
 
 
 - Muestra gráfica
-<img src="images/yaml_opt.png" width="50%">
+<img src="images/yaml_opt.png" width="80%">
 
 Se puede observar, sobre todo en los gráficos, que al aplicar una fuerza en un eje, sólo se modifica la posición en el mismo eje y no en el resto de los ejes, solucionando de esta forma el problema. 
 
@@ -374,11 +374,11 @@ En este apartado se probará a mover la posición del EE del manipulador, para o
 
 
 - Muestra en vídeo
-<img src="images/gift_4.4.gif" width="50%">
+<img src="images/gift_4.4.gif" width="80%">
 
 
 - Muestra gráfica
-<img src="images/yaml_4.4.png" width="50%">
+<img src="images/yaml_4.4.png" width="80%">
 
 Se puede observar que al mover la posición de referencia, el efecto final trata de seguir esa referencia. Al mismo tiempo, al aplicar una fuerza externa dicho EE cede ante al fuerza y se desvía de la posición ideal. 
 
@@ -390,7 +390,7 @@ Por último, se ha estado moviendo el manipular a diferentes posiciones y se ha 
 
 Lo que muestra es que el se está transmistiendo una eceleración infinita ya que el controlador está diciendo el manipulador que aplique toda la fuerza que pueda pero al ser físicamente imposible llegar a esa posición por mucha fuerza que aplique nunca conseguirá llegar por lo que el programa se paraliza como botón de seguridad. En el siguiente video se muestra el problema gráficamente:
 
-<img src="images/gift_4.4_error.gif" width="50%">
+<img src="images/gift_4.4_error.gif" width="80%">
 
 
 
